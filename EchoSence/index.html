@@ -12,9 +12,33 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-  <!-- Background layers -->
+  <!-- Background particle canvas (always on) -->
   <canvas id="scene"></canvas>
-  <div id="map"></div>
+
+  <!-- Intro / Home screen (initially visible) -->
+  <section id="intro" class="intro">
+    <div class="intro-card">
+      <h1 class="intro-title">Urban Echo</h1>
+      <p class="intro-tagline">Listen to your city’s emotions and respond faster.</p>
+
+      <ul class="intro-points">
+        <li>Anonymous mood check-ins pinned to approximate areas (privacy-safe).</li>
+        <li>AI analyzes sentiment, topics, and risk to surface real issues.</li>
+        <li>Heatmap + Alerts for city teams to act on spikes and clusters.</li>
+      </ul>
+
+      <div class="intro-actions">
+        <button id="startBtn" class="intro-primary">Start exploring</button>
+        <label class="intro-checkbox">
+          <input id="skipNext" type="checkbox" />
+          <span>Skip this screen next time</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map layer (hidden until Start) -->
+  <div id="map" class="hidden"></div>
 
   <!-- Fullscreen overlay for celebration -->
   <div id="celebration" aria-hidden="true">
@@ -23,13 +47,13 @@
   </div>
 
   <!-- Header -->
-  <header class="topbar">
+  <header class="topbar hidden">
     <h1>Urban Echo (Frontend Demo)</h1>
     <p class="hint">December → Xmas tree; you can also switch shape and palette.</p>
   </header>
 
   <!-- Right panel -->
-  <section class="panel">
+  <section class="panel hidden">
     <h2>Anonymous Mood Check-in</h2>
 
     <label for="postcode">Postcode / Area</label>
@@ -60,20 +84,18 @@
     <hr />
     <h3 style="margin:8px 0 6px 0;">Recent Alerts</h3>
     <div id="alertsPanel" style="max-height:160px; overflow:auto; font-size:13px; opacity:.95;">
-    <em>Loading…</em>
+      <em>Loading…</em>
     </div>
-
   </section>
 
   <!-- Three.js core -->
   <script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
 
   <!-- App scripts (order matters) -->
-  <script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
-  <script src="./js/particles.js"></script>       
-  <script src="./js/celebration3d.js"></script>   
-  <script src="./js/ui.js"></script>             
-  <script src="./js/map.js"></script>           
-
+  <script src="./js/particles.js"></script>
+  <script src="./js/celebration3d.js"></script>
+  <script src="./js/intro.js"></script>      <!-- NEW: home/intro controller -->
+  <script src="./js/ui.js"></script>
+  <script src="./js/map.js"></script>
 </body>
 </html>
