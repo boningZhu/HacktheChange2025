@@ -19,26 +19,45 @@
   <canvas id="scene"></canvas>
 
   <!-- Intro / Home screen (initially visible) -->
-  <section id="intro" class="intro">
-    <div class="intro-card">
-      <h1 class="intro-title">Urban Echo</h1>
-      <p class="intro-tagline">Listen to your city’s emotions and respond faster.</p>
+<section id="intro" class="intro" aria-hidden="false">
+  <!-- animated canvas background -->
+  <canvas id="introCanvas"></canvas>
 
-      <ul class="intro-points">
-        <li>Anonymous mood check-ins pinned to approximate areas (privacy-safe).</li>
-        <li>AI analyzes sentiment, topics, and risk to surface real issues.</li>
-        <li>Heatmap + Alerts for city teams to act on spikes and clusters.</li>
-      </ul>
+  <!-- content card -->
+  <div class="intro-card">
+    <h1 class="intro-title">EchoSense</h1>
+    <p class="intro-tagline">Listen to your city’s emotions — anonymously, safely, responsibly.</p>
 
-      <div class="intro-actions">
-        <button id="startBtn" class="intro-primary">Start exploring</button>
-        <label class="intro-checkbox">
-          <input id="skipNext" type="checkbox" />
-          <span>Skip this screen next time</span>
-        </label>
-      </div>
+    <ul class="intro-points">
+      <li>Anonymous one-line check-ins → privacy-safe geo signals</li>
+      <li>AI detects emotion, topics & risk for faster response</li>
+      <li>Heatmap + Alerts for community action</li>
+    </ul>
+
+    <div class="intro-actions">
+      <button id="startBtn" class="intro-primary">Start exploring</button>
+      <label class="intro-checkbox">
+        <input id="skipNext" type="checkbox" />
+        <span>Skip this screen next time</span>
+      </label>
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- … keep your map, topbar, panel, etc… -->
+
+<!-- App scripts (order matters) -->
+<script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
+<script src="./js/particles.js"></script>
+<script src="./js/celebration3d.js"></script>
+
+<!-- NEW: intro animation + controller -->
+<script src="./js/intro_anim.js"></script>
+<script src="./js/intro.js"></script>
+
+<script src="./js/ui.js"></script>
+<script src="./js/map.js"></script>
+
 
   <!-- Map layer (hidden until Start) -->
   <div id="map" class="hidden"></div>

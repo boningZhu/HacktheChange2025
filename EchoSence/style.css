@@ -154,3 +154,46 @@ html, body {
 .result a:hover {
   color: #ffffff;
 }
+
+/* Intro / Home */
+.intro {
+  position: fixed; inset: 0; z-index: 15;
+  display: grid; place-items: center;
+  transition: opacity .6s ease;
+}
+.intro[aria-hidden="true"] { opacity: 0; pointer-events: none; }
+
+#introCanvas {
+  position: absolute; inset: 0; z-index: 0;
+  display: block;
+}
+
+.intro-card {
+  position: relative; z-index: 1;
+  width: min(760px, 92vw);
+  background: rgba(22,24,34,.62);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  color: #fff;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+.intro-title { margin: 0; font-size: clamp(32px, 4.2vw, 46px); letter-spacing: .5px; }
+.intro-tagline { margin: 10px 0 16px; opacity: .92; }
+.intro-points { margin: 0 auto 18px; max-width: 560px; text-align: left; opacity: .95; }
+.intro-points li { margin: 6px 0; }
+
+.intro-actions { display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.intro-primary {
+  padding: 12px 18px; border-radius: 12px; border: none; cursor: pointer;
+  background: #7c5cff; color: #fff; font-weight: 700; font-size: 15px;
+  box-shadow: 0 10px 30px rgba(124,92,255,.4); transition: transform .12s ease, filter .12s ease;
+}
+.intro-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.intro-checkbox { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; opacity: .9; }
+
+/* Utility (map/panel hidden before start) */
+.hidden { opacity: 0; pointer-events: none; transform: translateY(4px); }
+.show   { opacity: 1; pointer-events: auto; transform: translateY(0); transition: opacity .5s ease, transform .5s ease; }
