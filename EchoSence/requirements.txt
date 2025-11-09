@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+pydantic>=2
+aiohttp
+python-dotenv
+geohash2 ; python_version >= "3.8"
+python-geohash ; python_version >= "3.8"
