@@ -1,36 +1,17 @@
-// ===== Leaflet Map for Urban Echo =====
+// map.js — 初始化延后到 intro 隐藏之后
 (function () {
   const MAP_CENTER = [51.0447, -114.0719]; // Calgary
   const MAP_ZOOM   = 11;
 
-  // ensure the container exists and has some size
-  const el = document.getElementById("map");
-  if (!el) {
-    console.warn("#map element not found.");
-    return;
-  }
-  // safety: make sure the div can take space
-  el.style.minHeight = el.style.minHeight || "100vh";
+  let map = null;           // 保存实例
+  let heatLayerGroup = null;
 
-  // 1) create map
-  const map = L.map("map", {
-    zoomControl: false,
-    attributionControl: false
-  }).setView(MAP_CENTER, MAP_ZOOM);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  // 2) colors by emotion
   function colorByEmotion(e) {
     if (e === "positive") return "#37d67a";
     if (e === "negative") return "#ff6b6b";
     return "#ffe066"; // neutral
   }
 
-  // 3) pulse marker (simple animation)
   function makePulseMarker(latlng, emotion, text) {
     const color = colorByEmotion(emotion);
     const marker = L.circleMarker(latlng, {
@@ -46,7 +27,6 @@
       marker.on("mouseover", () => marker.openPopup());
     }
 
-    // pulse: grow/shrink radius
     let r = 8, dir = 1;
     const timer = setInterval(() => {
       r += dir * 0.5;
@@ -54,29 +34,19 @@
       if (r <= 8)  dir = 1;
       marker.setRadius(r).setStyle({ fillOpacity: 0.25 + (r - 8) / 24 });
     }, 60);
-
-    // clean up after some time so the map isn't too busy
-    setTimeout(() => { clearInterval(timer); }, 180000); // 3 mins
+    setTimeout(() => clearInterval(timer), 180000);
     return marker;
   }
 
-  // 4) expose function for UI
-  function addEmotionMarker(latlng, emotion, text) {
-    map.setView(latlng, 12, { animate: true });
-    return makePulseMarker(latlng, emotion, text);
-  }
-
-  // 5) Optional: draw heatmap buckets from backend
-  let heatLayerGroup = L.layerGroup().addTo(map);
   async function refreshHeatmap(apiBase) {
+    if (!map || !heatLayerGroup) return;
     try {
       const res = await fetch(`${apiBase}/api/heatmap?hours=2&precision=6`);
       const arr = await res.json();
       heatLayerGroup.clearLayers();
 
       arr.forEach((item) => {
-        // NOTE: for demo we don't decode geohash on the client.
-        // We place approximate circles around the city center with slight jitter.
+        // demo：不解 geohash，先在城市中心附近抖动显示
         const base = [
           MAP_CENTER[0] + (Math.random() - 0.5) * 0.02,
           MAP_CENTER[1] + (Math.random() - 0.5) * 0.02
@@ -99,23 +69,53 @@
     }
   }
 
-  // 6) export to global — IMPORTANT: expose `map` (no underscore)
-  window.UEMAP = {
-    center: MAP_CENTER,
-    map,                       // <- intro.js expects this
-    addEmotionMarker,
-    refreshHeatmap
-  };
+  function addEmotionMarker(latlng, emotion, text) {
+    if (!map) return;
+    map.setView(latlng, 12, { animate: true });
+    return makePulseMarker(latlng, emotion, text);
+  }
 
-  // If the map was initialized while hidden, fix size after a tick
-  // (intro.js also calls invalidateSize after reveal; this is an extra guard)
-  setTimeout(() => {
-    if (window.getComputedStyle(el).visibility === "hidden" ||
-        window.getComputedStyle(el).display === "none" ||
-        el.classList.contains("hidden")) {
-      // will be made visible by intro.js; do nothing now
-    } else {
-      map.invalidateSize(true);
+  function initMap() {
+    const el = document.getElementById("map");
+    if (!el) {
+      console.warn("#map not found");
+      return;
     }
-  }, 100);
+    el.style.minHeight = el.style.minHeight || "100vh";
+
+    map = L.map("map", { zoomControl: false, attributionControl: false })
+            .setView(MAP_CENTER, MAP_ZOOM);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    heatLayerGroup = L.layerGroup().addTo(map);
+
+    // 确保第一次显示后尺寸正确
+    setTimeout(() => map.invalidateSize(true), 50);
+
+    // 导出全局 API
+    window.UEMAP = {
+      center: MAP_CENTER,
+      map,
+      addEmotionMarker,
+      refreshHeatmap
+    };
+
+    // 初始化一次热力（若前端有 API_BASE）
+    if (window.API_BASE) {
+      refreshHeatmap(window.API_BASE);
+    }
+  }
+
+  // 监听“开始”事件
+  window.addEventListener("ue:start", initMap);
+
+  // 若 intro 被跳过（本地存储 ue_started=1），页面加载后立即初始化
+  window.addEventListener("load", () => {
+    const skip = localStorage.getItem("ue_started") === "1";
+    if (skip) initMap();
+  });
 })();

@@ -197,3 +197,9 @@ html, body {
 /* Utility (map/panel hidden before start) */
 .hidden { opacity: 0; pointer-events: none; transform: translateY(4px); }
 .show   { opacity: 1; pointer-events: auto; transform: translateY(0); transition: opacity .5s ease, transform .5s ease; }
+
+.intro[aria-hidden="true"] {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden; /* 新增：更彻底 */
+}
