@@ -73,8 +73,8 @@ html, body {
 
 .panel input::placeholder,
 .panel textarea::placeholder {
-  color: #bbb; 
-  opacity: 1; 
+  color: #bbb;
+  opacity: 1;
 }
 
 .panel input::-webkit-input-placeholder,
@@ -94,11 +94,11 @@ html, body {
 }
 
 .panel button {
-  margin-top: 12px; width: 100%; padding: 10px 0; border: none; border-radius: 10px;
+  margin-top: 12px; width: 100%; padding: 10px 0; border: none; border-radius: 10px; font-size: 16px;
   background: #5c7cfa; color: #fff; font-weight: 600; cursor: pointer;
 }
 .panel button:hover { filter: brightness(1.05); }
-.result { margin-top: 10px; min-height: 24px; font-size: 13px; opacity: .95; }
+.result { margin-top: 10px; min-height: 24px; font-size: 18px; opacity: .95; line-height: 1.8;}
 .demo { display: flex; gap: 8px; flex-wrap: wrap; }
 .demo button { flex: 1; padding: 8px 0; background: rgba(255,255,255,.1); }
 
@@ -145,3 +145,12 @@ html, body {
 /* Fade utility */
 .hidden { opacity: 0; pointer-events: none; transform: translateY(4px); }
 .show   { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+.result a {
+  color: #89b0ff;
+  text-decoration: underline;
+}
+
+.result a:hover {
+  color: #ffffff;
+}

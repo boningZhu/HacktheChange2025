@@ -76,7 +76,7 @@
       const empathy   = data?.reply?.empathy || "";
       const resources = (data?.reply?.resources || [])
         .map(r => `<a href="${r.url}" target="_blank" rel="noopener">${r.title}</a>`)
-        .join(" · ");
+        .join(" <br> ");
 
       // Update particle palette (background)
       window.UELayer?.setPaletteByEmotion?.(emotion);
