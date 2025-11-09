@@ -7,6 +7,13 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
 }
 
+/* Apply border-box sizing to all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* Background canvas */
 #scene {
   position: fixed;
@@ -30,36 +37,62 @@ html, body {
   position: fixed;
   left: 20px;
   top: 14px;
-  color: #fff;
+  color: #3700ff6d;
   text-shadow: 0 2px 8px rgba(0,0,0,.6);
   transition: opacity .5s ease, transform .5s ease;
 }
-.topbar h1 { margin: 0; font-size: 20px; }
-.topbar .hint { margin: 4px 0 0 0; font-size: 12px; opacity: .8; }
+.topbar h1 { margin: 0; font-size: 48px; }
+.topbar .hint {
+  margin: 4px 0 0 0; font-size: 12px; opacity: .8;
+  display: none;
+}
 
 /* Right panel */
 .panel {
   position: fixed;
   right: 20px;
   top: 20px;
-  width: 320px;
+  width: 400px;
   background: rgba(20,20,30,.65);
   color: #fff;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 12px;
-  padding: 16px;
+  padding: 24px;
   transition: opacity .5s ease, transform .5s ease;
 }
 .panel h2 { margin: 0 0 12px 0; font-size: 18px; }
 .panel label {
-  display: block; margin-top: 10px; font-size: 13px; opacity: .9;
+  display: block; margin-top: 15px; font-size: 18px; opacity: .9;
 }
 .panel input, .panel textarea {
-  width: 100%; margin-top: 6px; border-radius: 8px; padding: 10px 12px;
+  width: 100%; margin-top: 10px; border-radius: 8px; padding: 10px 12px; font-size: 18px;
   border: 1px solid rgba(255,255,255,.25);
   background: rgba(255,255,255,.08); color: #fff; outline: none;
 }
+
+.panel input::placeholder,
+.panel textarea::placeholder {
+  color: #bbb; 
+  opacity: 1; 
+}
+
+.panel input::-webkit-input-placeholder,
+.panel textarea::-webkit-input-placeholder {
+  color: #bbb;
+}
+
+.panel input::-moz-placeholder,
+.panel textarea::-moz-placeholder {
+  color: #bbb;
+  opacity: 1;
+}
+
+.panel input:-ms-input-placeholder,
+.panel textarea:-ms-input-placeholder {
+  color: #bbb;
+}
+
 .panel button {
   margin-top: 12px; width: 100%; padding: 10px 0; border: none; border-radius: 10px;
   background: #5c7cfa; color: #fff; font-weight: 600; cursor: pointer;
